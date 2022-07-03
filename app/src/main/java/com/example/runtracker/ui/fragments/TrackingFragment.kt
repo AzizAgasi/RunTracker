@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.runtracker.R
+import com.example.runtracker.other.Constants.ACTION_START_OR_RESUME_SERVICE
 import com.example.runtracker.services.TrackingServices
 import com.example.runtracker.ui.viewModels.MainViewModel
 import com.google.android.gms.maps.GoogleMap
@@ -23,12 +24,16 @@ class TrackingFragment: Fragment(R.layout.fragment_tracking) {
 
         mapView.onCreate(savedInstanceState)
 
+        btnToggleRun.setOnClickListener {
+            sendCommandToService(ACTION_START_OR_RESUME_SERVICE)
+        }
+
         mapView.getMapAsync {
             map = it
         }
     }
 
-    private fun commandToService(action: String) =
+    private fun sendCommandToService(action: String) =
         Intent(requireContext(), TrackingServices::class.java).also {
             it.action = action
             requireContext().startService(it)
