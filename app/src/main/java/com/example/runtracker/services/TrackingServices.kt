@@ -61,10 +61,11 @@ class TrackingServices: LifecycleService() {
                         startForegroundService()
                         isFirstRun = false
                     } else {
+                        startForegroundService()
                         Timber.d("Resuming Service")
                     }
                 }
-                ACTION_PAUSE_SERVICE -> Timber.d("Service Paused")
+                ACTION_PAUSE_SERVICE -> pauseService()
                 ACTION_STOP_SERVICE -> Timber.d("Service Stopped")
             }
         }
@@ -159,6 +160,10 @@ class TrackingServices: LifecycleService() {
         add(mutableListOf())
         pathPoints.postValue(this)
     } ?: pathPoints.postValue(mutableListOf(mutableListOf()))
+
+    private fun pauseService() {
+        isTracking.postValue(false)
+    }
 
     companion object {
         val isTracking = MutableLiveData<Boolean>()
