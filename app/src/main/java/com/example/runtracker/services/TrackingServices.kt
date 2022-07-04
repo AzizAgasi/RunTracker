@@ -45,6 +45,7 @@ typealias Polylines = MutableList<Polyline>
 class TrackingServices: LifecycleService() {
 
     var isFirstRun = true
+    var serviceKilled = false
 
     @Inject
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -89,7 +90,7 @@ class TrackingServices: LifecycleService() {
                     }
                 }
                 ACTION_PAUSE_SERVICE -> pauseService()
-                ACTION_STOP_SERVICE -> Timber.d("Service Stopped")
+                ACTION_STOP_SERVICE -> killService()
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -149,9 +150,11 @@ class TrackingServices: LifecycleService() {
         startForeground(NOTIFICATION_ID, baseNotificationBuilder.build())
 
         timeRunInSeconds.observe(this) {
-            val notification = currNotificationBuilder
-                .setContentText(TrackingUtility.getFormattedStopWatchTime(it * 1000L))
-            notificationManager.notify(NOTIFICATION_ID, notification.build())
+            if (!serviceKilled) {
+                val notification = currNotificationBuilder
+                    .setContentText(TrackingUtility.getFormattedStopWatchTime(it * 1000L))
+                notificationManager.notify(NOTIFICATION_ID, notification.build())
+            }
         }
     }
 
@@ -234,9 +237,20 @@ class TrackingServices: LifecycleService() {
             set(currNotificationBuilder, ArrayList<NotificationCompat.Action>())
         }
 
-        currNotificationBuilder = baseNotificationBuilder
-            .addAction(R.drawable.ic_pause_black_24dp, notificationActionText, pendingIntent)
-        notificationManager.notify(NOTIFICATION_ID, currNotificationBuilder.build())
+        if (!serviceKilled) {
+            currNotificationBuilder = baseNotificationBuilder
+                .addAction(R.drawable.ic_pause_black_24dp, notificationActionText, pendingIntent)
+            notificationManager.notify(NOTIFICATION_ID, currNotificationBuilder.build())
+        }
+    }
+
+    private fun killService() {
+        serviceKilled = true
+        isFirstRun = true
+        pauseService()
+        postInitialValues()
+        stopForeground(true)
+        stopSelf()
     }
 
     companion object {
