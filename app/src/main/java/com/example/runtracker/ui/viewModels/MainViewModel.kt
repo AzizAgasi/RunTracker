@@ -11,6 +11,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val mainRepository: MainRepository): ViewModel() {
 
+    val runsSortedByDate = mainRepository.filterRunBy("timestamp")
+
     fun insertRun(run: Run) {
         viewModelScope.launch {
             mainRepository.insertRun(run)
