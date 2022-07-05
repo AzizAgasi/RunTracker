@@ -34,4 +34,6 @@ object Constants {
     const val KEY_FIRST_TIME_TOGGLE = "firstTimeToggle"
     const val KEY_NAME = "key_name"
     const val KEY_WEIGHT = "key_weight"
+
+    const val CANCEL_TRACKING_DIALOG_TAG = "cancel_tracking_dialog_tag"
 }
