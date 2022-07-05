@@ -23,4 +23,10 @@ object Constants {
     const val NOTIFICATION_CHANNEL_ID = "tracking_channel"
     const val NOTIFICATION_CHANNEL_NAME = "Tracking"
     const val NOTIFICATION_ID = 1
+
+    const val SORT_RUN_BY_DATE = "timestamp"
+    const val SORT_RUN_BY_TIME = "timemili"
+    const val SORT_RUN_BY_CALORIES_BURNED = "calories"
+    const val SORT_RUN_BY_SPEED = "speed"
+    const val SORT_RUN_BY_DISTANCE = "distance"
 }
