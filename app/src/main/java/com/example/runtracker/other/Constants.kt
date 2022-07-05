@@ -29,4 +29,9 @@ object Constants {
     const val SORT_RUN_BY_CALORIES_BURNED = "calories"
     const val SORT_RUN_BY_SPEED = "speed"
     const val SORT_RUN_BY_DISTANCE = "distance"
+
+    const val SHARED_PREFERENCES = "sharedPref"
+    const val KEY_FIRST_TIME_TOGGLE = "firstTimeToggle"
+    const val KEY_NAME = "key_name"
+    const val KEY_WEIGHT = "key_weight"
 }
